@@ -49,7 +49,7 @@ public:
             newNode->next = head;
             head = newNode;
         }
-    };
+    }
     T removefromStart() {
          T tmp = head->data;
         if(isEmpty()) {
