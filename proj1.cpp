@@ -38,8 +38,33 @@ public:
 
 
     }
-    void insertatStart(T value);
-    T removefromStart() ;
+    void insertatStart(T value) {
+        if(isEmpty()) {
+            Node* newNode = new Node(value);
+            theSize++;
+            head = tail = newNode;
+        }
+        else {
+            Node* newNode = new Node(value);
+            newNode->next = head;
+            head = newNode;
+        }
+    };
+    T removefromStart() {
+         T tmp = head->data;
+        if(isEmpty()) {
+            return -1;
+        }
+        else {
+       Node *temp = head;
+       T tempval = head->data;
+       head = head->next;
+       delete (temp);
+       theSize--;
+       return tempval;
+        }
+       
+    } 
 public:
     SimpleList() {
         theSize = 0;
@@ -73,12 +98,12 @@ void parseinput() {
  }
 }
 
-
 // Driver code
 int main()
 {
-SimpleList<string> test;
-test.insertatEnd("test");
-test.insertatEnd("test2");
-cout  << (test.head)->data << endl;
+SimpleList<int> test;
+test.insertatStart(2);
+
+
+cout << test.theSize << endl;
 }
