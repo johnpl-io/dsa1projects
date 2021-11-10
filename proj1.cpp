@@ -13,10 +13,9 @@ class Node {
     public:
     T data;
     Node *next;
-    Node(T data) {
-        this->data = data;
-        next = nullptr;
-    }
+
+    Node(T data): data{data}, next{nullptr} { }
+
     Node(T data, Node *next) {
         this->data = data;
         this->next = next;
@@ -25,7 +24,7 @@ class Node {
 //change to protected later
 public:
     void insertatEnd(T value) {
-        if(isEmpty()) {
+        if(getlength() == 0) {
             Node* newNode = new Node(value);
             theSize++;
             head = tail = newNode;
@@ -39,7 +38,7 @@ public:
 
     }
     void insertatStart(T value) {
-        if(isEmpty()) {
+        if(getlength() == 0) {
             Node* newNode = new Node(value);
             theSize++;
             head = tail = newNode;
@@ -51,8 +50,7 @@ public:
         }
     }
     T removefromStart() {
-         T tmp = head->data;
-        if(isEmpty()) {
+        if(getlength() == 0) {
             return -1;
         }
         else {
@@ -71,8 +69,8 @@ public:
         head = nullptr;
         tail = nullptr;
     }
-    bool isEmpty() {
-      return theSize == 0;
+    int getlength() {
+      return theSize;
     }
     //virtual T pop() = 0;
     //virtual void push(T value) = 0;
@@ -82,6 +80,22 @@ public:
     Node *head;
     Node *tail;
 };
+
+template <typename T>
+class Stack : public SimpleList<T> {
+    public:
+    using SimpleList<T>::SimpleList;
+    void push(T value) { 
+        SimpleList<T>::insertatStart();
+    }
+
+};
+/*
+template <typename T>
+class Queue : public SimpleList<T> {
+
+};
+*/
 
 void parseinput() {
          cout << "what is your input file?" << "\n";
@@ -102,8 +116,8 @@ void parseinput() {
 int main()
 {
 SimpleList<int> test;
-test.insertatStart(2);
-
-
-cout << test.theSize << endl;
+test.insertatStart(3);
+test.insertatStart(4);
+test.insertatStart(4);
+cout << test.removefromStart() << endl;
 }
