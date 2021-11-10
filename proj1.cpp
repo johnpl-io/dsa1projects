@@ -64,11 +64,8 @@ public:
        
     } 
 public:
-    SimpleList() {
-        theSize = 0;
-        head = nullptr;
-        tail = nullptr;
-    }
+    SimpleList() : theSize{0}, head{nullptr}, tail{nullptr} { }
+
     int getlength() {
       return theSize;
     }
@@ -116,6 +113,7 @@ void parseinput() {
 int main()
 {
 SimpleList<int> test;
+
 test.insertatStart(3);
 test.insertatStart(4);
 test.insertatStart(4);
