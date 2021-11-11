@@ -15,14 +15,9 @@ class Node {
     Node *next;
 
     Node(T data): data{data}, next{nullptr} { }
-
-    Node(T data, Node *next) {
-        this->data = data;
-        this->next = next;
-    }
 };
 //change to protected later
-public:
+protected:
     void insertatEnd(T value) {
         if(getlength() == 0) {
             Node* newNode = new Node(value);
@@ -33,6 +28,7 @@ public:
             Node* newNode = new Node(value);
             tail->next = newNode;
             tail = newNode;
+              theSize++;
         }
 
 
@@ -46,6 +42,7 @@ public:
         else {
             Node* newNode = new Node(value);
             newNode->next = head;
+               theSize++;
             head = newNode;
         }
     }
@@ -69,10 +66,9 @@ public:
     int getlength() {
       return theSize;
     }
-    //virtual T pop() = 0;
-    //virtual void push(T value) = 0;
-    //change to private later
-public:
+virtual T pop() = 0;
+virtual void push(T value) = 0;
+private:
     int theSize;
     Node *head;
     Node *tail;
@@ -83,16 +79,26 @@ class Stack : public SimpleList<T> {
     public:
     using SimpleList<T>::SimpleList;
     void push(T value) { 
-        SimpleList<T>::insertatStart();
+        this->insertatStart(value);
+    }
+    T pop() {
+        return this->removefromStart();
     }
 
 };
-/*
+
 template <typename T>
 class Queue : public SimpleList<T> {
-
+    public: 
+    using SimpleList<T>::SimpleList;
+    void push(T value) { 
+        this->insertatEnd(value);
+    }
+    T pop() {
+        return this->removefromStart();
+    }
 };
-*/
+
 
 void parseinput() {
          cout << "what is your input file?" << "\n";
@@ -112,10 +118,8 @@ void parseinput() {
 // Driver code
 int main()
 {
-SimpleList<int> test;
-
-test.insertatStart(3);
-test.insertatStart(4);
-test.insertatStart(4);
-cout << test.removefromStart() << endl;
+Queue<int> test;
+test.push(3);
+test.push(4);
+cout << test.pop() << endl;
 }
