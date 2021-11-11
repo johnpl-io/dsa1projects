@@ -18,21 +18,7 @@ class Node {
 };
 //change to protected later
 protected:
-    void insertatEnd(T value) {
-        if(getlength() == 0) {
-            Node* newNode = new Node(value);
-            theSize++;
-            head = tail = newNode;
-
-        } else {
-            Node* newNode = new Node(value);
-            tail->next = newNode;
-            tail = newNode;
-              theSize++;
-        }
-
-
-    }
+    void insertatEnd(T value);
     void insertatStart(T value) {
         if(getlength() == 0) {
             Node* newNode = new Node(value);
@@ -63,7 +49,7 @@ protected:
 public:
     SimpleList() : theSize{0}, head{nullptr}, tail{nullptr} { }
 
-    int getlength() {
+inline int getlength() {
       return theSize;
     }
 virtual T pop() = 0;
@@ -114,12 +100,29 @@ void parseinput() {
      inputfile.close();
  }
 }
+template <typename T>
+void SimpleList<T>::insertatEnd(T value) {
+    if(getlength() == 0) {
+        Node* newNode = new Node(value);
+        theSize++;
+        head = tail = newNode;
 
+   } else {
+        Node* newNode = new Node(value);
+        tail->next = newNode;
+        tail = newNode;
+              theSize++;
+        }
+
+
+    }
 // Driver code
 int main()
 {
-Queue<int> test;
+Stack<int> test;
 test.push(3);
 test.push(4);
-cout << test.pop() << endl;
+test.push(5);
+
+
 }
