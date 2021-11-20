@@ -102,7 +102,6 @@ void SimpleList<T>::insertatEnd(T value) {
 
 
     }
-    
 bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<string, SimpleList<double> *> mapsSLd, map<string, SimpleList<string> *> mapsSLs) {
     return (mapsSLi.find(name)!=mapsSLi.end() || mapsSLd.find(name)!=mapsSLd.end() || mapsSLs.find(name)!=mapsSLs.end());
 }
@@ -177,11 +176,42 @@ void parseinput(string inputname, string outputname) {
 
                     
                 }
-            if (arg[0] == "pop") {
+           
 
             }
-
+        if(arg[0] == "pop") {
+        if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
+            outputfile << "ERROR: This name does not exist!" << "\n";
+                }
+        else {
+            if(dtype == 'i') {
+                if(mapsSLi[arg[1]]->getlength() == 0) {
+                outputfile << "ERROR: This list is empty!" << "\n";
+                }
+                else {
+                 outputfile << "Value popped: " << mapsSLi[arg[1]]->pop() << "\n";
+                }
             }
+              if(dtype == 'd') {
+                if(mapsSLd[arg[1]]->getlength() == 0) {
+                outputfile << "ERROR: This list is empty!" << "\n";
+                }
+                else {
+                 outputfile << "Value popped: " << mapsSLd[arg[1]]->pop() << "\n";
+                }
+            }
+                 if(dtype == 's') {
+                if(mapsSLs[arg[1]]->getlength() == 0) {
+                outputfile << "ERROR: This list is empty!" << "\n";
+                }
+                else {
+                 outputfile << "Value popped: " << mapsSLs[arg[1]]->pop() << "\n";
+                }
+            }
+
+        }
+            
+        }
             
      }
      inputfile.close();
