@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream> 
 #include <fstream>
-
+#include <map>
 using namespace std;
 
 template <typename T> 
@@ -34,7 +34,7 @@ protected:
     }
     T removefromStart() {
         if(getlength() == 0) {
-            return -1;
+            return 0;
         }
         else {
        Node *temp = head;
@@ -86,20 +86,6 @@ class Queue : public SimpleList<T> {
 };
 
 
-void parseinput() {
-         cout << "what is your input file?" << "\n";
-     string inputfile2;
-     cin >> inputfile2;
-     string line;
-  ifstream inputfile (inputfile2);
- if (inputfile.is_open()) {
-    
-     while ( getline (inputfile, line)) {
-         cout << line << "\n";
-     }
-     inputfile.close();
- }
-}
 template <typename T>
 void SimpleList<T>::insertatEnd(T value) {
     if(getlength() == 0) {
@@ -116,13 +102,104 @@ void SimpleList<T>::insertatEnd(T value) {
 
 
     }
+    
+bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<string, SimpleList<double> *> mapsSLd, map<string, SimpleList<string> *> mapsSLs) {
+    return (mapsSLi.find(name)!=mapsSLi.end() || mapsSLd.find(name)!=mapsSLd.end() || mapsSLs.find(name)!=mapsSLs.end());
+}
+ 
+void parseinput(string inputname, string outputname) {
+    ifstream inputfile (inputname);
+    ofstream outputfile;
+    string line;
+    map<string, SimpleList<int> *> mapsSLi;
+    map<string, SimpleList<double> *> mapsSLd;
+    map<string, SimpleList<string> *> mapsSLs;
+    string arg[3];
+    char dtype;
+    int count; 
+
+    outputfile.open(outputname);
+ if (inputfile.is_open()) {
+    
+     while ( getline (inputfile, line)) {
+         outputfile << "PROCESSING COMMAND: " << line << "\n";
+         stringstream s(line);
+         count = 0;
+         while (s >> line) {
+             arg[count] = line;
+             count++;
+         }
+         if (arg[0] == "pop") {
+             arg[2] = "";
+         }
+            dtype = arg[1].at(0);
+            if(arg[0] == "create") {
+                if( check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs) ) {
+                  outputfile << "ERROR: This name already exists!" << "\n";
+              }
+              else {
+                if(arg[2] == "stack") {
+                   if(dtype == 'i') 
+                         mapsSLi.insert(pair<string, SimpleList<int> *>(arg[1], new Stack<int>()));
+                   
+                   if(dtype == 'd') 
+                      mapsSLd.insert(pair<string, SimpleList<double> *>(arg[1], new Stack<double>())); 
+                    
+                    if (dtype == 's')
+                     mapsSLs.insert(pair<string, SimpleList<string> *>(arg[1], new Stack<string>()));
+                }
+
+                 if(arg[2] == "queue") {
+                   if(dtype == 'i') 
+                         mapsSLi.insert(pair<string, SimpleList<int> *>(arg[1], new Queue<int>()));
+                   
+                   if(dtype == 'd') 
+                      mapsSLd.insert(pair<string, SimpleList<double> *>(arg[1], new Queue<double>())); 
+                    
+                    if (dtype == 's')
+                     mapsSLs.insert(pair<string, SimpleList<string> *>(arg[1], new Queue<string>()));
+                }
+                        
+              }
+                  }
+            if(arg[0] == "push") {
+                if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
+                    outputfile << "ERROR: This name does not exist!" << "\n";
+                }
+                else {
+                    if (dtype == 'i') 
+                    mapsSLi[arg[1]]-> push(stoi(arg[2]));
+                    if (dtype == 'd') 
+                    mapsSLd[arg[1]]-> push(stod(arg[2]));
+                    if (dtype == 's') 
+                    mapsSLs[arg[1]]-> push(arg[2]);
+
+
+                    
+                }
+            if (arg[0] == "pop") {
+
+            }
+
+            }
+            
+     }
+     inputfile.close();
+ }
+ outputfile.close();
+}
+
+
 // Driver code
 int main()
 {
-Stack<int> test;
-test.push(3);
-test.push(4);
-test.push(5);
+string inputname;
+string outputname;
+cout << "input" << "\n";
+cin >> inputname;
+cout << "output" << "\n";
+cin >> outputname;
+parseinput(inputname, outputname);
 
 
 }

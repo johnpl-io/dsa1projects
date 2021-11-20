@@ -52,5 +52,14 @@ void parseinput() {
    output.close();
 }
 int main() {
-parseinput();
+    string str = "one two three \n";
+stringstream s(str);
+string word;
+string test[2];
+int i = 0;
+while (s >> word) {
+    test[i] = word;
+    i++;
+}
+cout << test[2] << endl;
 }
