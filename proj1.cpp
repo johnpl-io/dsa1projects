@@ -5,53 +5,42 @@
 #include <fstream>
 #include <map>
 using namespace std;
-
+//Abstract base class SimpleList
 template <typename T> 
 class SimpleList {
 private:
+//private member class Node 
 class Node {
+//public member variables are used in Node constructor
     public:
     T data;
     Node *next;
 
+//member Inititlization List for Default constructor of Node
     Node(T data): data{data}, next{nullptr} { }
 };
-//change to protected later
+//initilization of protected member functions to only be used in derived classes of Stack and Queue
 protected:
     void insertatEnd(T value);
-    void insertatStart(T value) {
-        if(getlength() == 0) {
-            Node* newNode = new Node(value);
-            theSize++;
-            head = tail = newNode;
-        }
-        else {
-            Node* newNode = new Node(value);
-            newNode->next = head;
-               theSize++;
-            head = newNode;
-        }
-    }
-    T removefromStart() {
-        if(getlength() == 0) {
-            return 0;
-        }
-        else {
-       Node *temp = head;
-       T tempval = head->data;
-       head = head->next;
-       delete (temp);
-       theSize--;
-       return tempval;
-        }
-       
-    } 
+    void insertatStart(T value);
+    T removefromStart();
 public:
+//Member Initilization list for Default constructor of Simple List
     SimpleList() : theSize{0}, head{nullptr}, tail{nullptr} { }
-
 inline int getlength() {
       return theSize;
     }
+//SimpleList destructor
+~SimpleList() {
+    Node* current = head;
+    Node* next;
+    while(current != nullptr) {
+        next = current->next;
+        delete current;
+        current = next;
+    }
+}
+//
 virtual T pop() = 0;
 virtual void push(T value) = 0;
 private:
@@ -102,6 +91,36 @@ void SimpleList<T>::insertatEnd(T value) {
 
 
     }
+
+template <typename T>
+   void SimpleList<T>::insertatStart(T value) {
+        if(getlength() == 0) {
+            Node* newNode = new Node(value);
+            theSize++;
+            head = tail = newNode;
+        }
+        else {
+            Node* newNode = new Node(value);
+            newNode->next = head;
+               theSize++;
+            head = newNode;
+        }
+    }
+template <typename T>
+  T SimpleList<T>::removefromStart() {
+        if(getlength() == 0) {
+            return 0;
+        }
+        else {
+       Node *temp = head;
+       T tempval = head->data;
+       head = head->next;
+       delete (temp);
+       theSize--;
+       return tempval;
+        }
+       
+    } 
 bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<string, SimpleList<double> *> mapsSLd, map<string, SimpleList<string> *> mapsSLs) {
     return (mapsSLi.find(name)!=mapsSLi.end() || mapsSLd.find(name)!=mapsSLd.end() || mapsSLs.find(name)!=mapsSLs.end());
 }
@@ -161,24 +180,7 @@ void parseinput(string inputname, string outputname) {
                         
               }
                   }
-            if(arg[0] == "push") {
-                if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
-                    outputfile << "ERROR: This name does not exist!" << "\n";
-                }
-                else {
-                    if (dtype == 'i') 
-                    mapsSLi[arg[1]]-> push(stoi(arg[2]));
-                    if (dtype == 'd') 
-                    mapsSLd[arg[1]]-> push(stod(arg[2]));
-                    if (dtype == 's') 
-                    mapsSLs[arg[1]]-> push(arg[2]);
-
-
-                    
-                }
-           
-
-            }
+  
         if(arg[0] == "pop") {
         if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
             outputfile << "ERROR: This name does not exist!" << "\n";
@@ -212,11 +214,38 @@ void parseinput(string inputname, string outputname) {
         }
             
         }
+          if(arg[0] == "push") {
+                if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
+                    outputfile << "ERROR: This name does not exist!" << "\n";
+                }
+                else {
+                    if (dtype == 'i') 
+                    mapsSLi[arg[1]]-> push(stoi(arg[2]));
+                    if (dtype == 'd') 
+                    mapsSLd[arg[1]]-> push(stod(arg[2]));
+                    if (dtype == 's') 
+                    mapsSLs[arg[1]]-> push(arg[2]);
+
+
+                    
+                }
+           
+
+            }        
             
      }
      inputfile.close();
  }
  outputfile.close();
+ for (auto i : mapsSLi) {
+     delete i.second;
+ }
+  for (auto i : mapsSLd) {
+     delete i.second;
+ }
+   for (auto i : mapsSLs) {
+     delete i.second;
+ }
 }
 
 
