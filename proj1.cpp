@@ -125,7 +125,14 @@ template <typename T>
        
     } 
 bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<string, SimpleList<double> *> mapsSLd, map<string, SimpleList<string> *> mapsSLs) {
-    return (mapsSLi.find(name)!=mapsSLi.end() || mapsSLd.find(name)!=mapsSLd.end() || mapsSLs.find(name)!=mapsSLs.end());
+    if (name.at(0) == 'i')
+    return mapsSLi.find(name)!=mapsSLi.end();
+    if (name.at(0) == 'd')
+    mapsSLd.find(name)!=mapsSLd.end();
+    if (name.at(0) == 's')
+    return  mapsSLs.find(name)!=mapsSLs.end();
+
+    return true;
 }
  
 void parseinput(string inputname, string outputname) {
