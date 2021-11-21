@@ -3,7 +3,9 @@
 #include <iostream>
 #include <sstream> 
 #include <fstream>
+#include <unordered_map>
 #include <map>
+#include <chrono>
 using namespace std;
 //Abstract base class SimpleList
 template <typename T> 
@@ -31,7 +33,7 @@ inline int getlength() {
       return theSize;
     }
 //SimpleList destructor
-~SimpleList() {
+ virtual ~SimpleList() {
     Node* current = head;
     Node* next;
     while(current != nullptr) {
@@ -126,6 +128,7 @@ bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<stri
 }
  
 void parseinput(string inputname, string outputname) {
+    auto start = chrono::high_resolution_clock::now();
     ifstream inputfile (inputname);
     ofstream outputfile;
     string line;
@@ -246,6 +249,9 @@ void parseinput(string inputname, string outputname) {
    for (auto i : mapsSLs) {
      delete i.second;
  }
+ auto stop = chrono::high_resolution_clock::now();
+ auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+cout << duration.count() << endl;
 }
 
 
