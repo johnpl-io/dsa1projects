@@ -1,3 +1,5 @@
+//John Pluchino DSA 1 Program 1 
+//Cooper Union
 #include <iostream>
 #include <sstream> 
 #include <fstream>
@@ -51,7 +53,7 @@ private:
     Node *head;
     Node *tail;
 };
-//function decleration for insert an element at the end of a list
+//function decleration for insert a Node at the end of a list
 template <typename T>
 void SimpleList<T>::insertatEnd(T value) {
 //if the list has a length 0 the head and tail become the new node that is inserted
@@ -59,7 +61,7 @@ void SimpleList<T>::insertatEnd(T value) {
         Node* newNode = new Node(value);
         theSize++;
         head = tail = newNode;
-//otherwise the element is inserted next to the tail, becoming the new tail
+//otherwise the Node is inserted next to the tail, becoming the new tail
    } else {
         Node* newNode = new Node(value);
         tail->next = newNode;
@@ -67,7 +69,7 @@ void SimpleList<T>::insertatEnd(T value) {
               theSize++;
         }
     }
-//function declaration for inserting elements at the start of the list
+//function declaration for inserting Nodes at the start of the list
 template <typename T>
    void SimpleList<T>::insertatStart(T value) {
     //same procedure as insert at end of the list has a size 0
@@ -76,7 +78,7 @@ template <typename T>
             theSize++;
             head = tail = newNode;
         }
-    //otherwise insert the node at the front of the list and make it the new head
+    //otherwise insert the Node at the front of the list and make it the new head
         else {
             Node* newNode = new Node(value);
             newNode->next = head;
@@ -84,10 +86,10 @@ template <typename T>
             head = newNode;
         }
     }
-//function declaration for removing an element from start of list
+//function declaration for removing a Node from start of list
 template <typename T>
   T SimpleList<T>::removefromStart() {
-//if the length of the list is zero 0 is returned as this condition should not be possible
+//if the length of the list is zero, 0 is returned as this condition should not be possible
         if(getlength() == 0) {
             return 0;
         }
@@ -104,7 +106,7 @@ template <typename T>
        
     } 
 
-//Derived class stack 
+//Derived class Stack 
 template <typename T>
 class Stack : public SimpleList<T> {
     public:
@@ -136,16 +138,15 @@ class Queue : public SimpleList<T> {
 };
 
 
-//this function checks if a map exists by using the member function find for each map true is returned if a stack or queue name 
-//exists inside of the map
-bool check_exists(const string &name, map<string, SimpleList<int> *> &mapsLi,  map<string, SimpleList<double> *> &mapsLd, map<string, SimpleList<string> *> &mapsLs) {
+//this function checks if a map exists by using the member function find for each map ; true is returned if a Stack or Queue exists in the specific data type of map
+bool check_exists(const string &name, const map<string, SimpleList<int> *> &mapsLi, const map<string, SimpleList<double> *> &mapsLd, const map<string, SimpleList<string> *> &mapsLs) {
 //each map is only searched if it is in question based off of the data type
     if (name.at(0) == 'i')
-     return (mapsLi.find(name)!=mapsLi.end());
-      if (name.at(0) == 'd')
-     return (mapsLd.find(name)!=mapsLd.end());
-        if (name.at(0) == 's')
-     return (mapsLs.find(name)!=mapsLs.end());
+        return (mapsLi.find(name)!=mapsLi.end());
+    if (name.at(0) == 'd')
+        return (mapsLd.find(name)!=mapsLd.end());
+    if (name.at(0) == 's')
+        return (mapsLs.find(name)!=mapsLs.end());
      //impossible condition so if reached error return of -1
     return -1;
 }
@@ -180,7 +181,7 @@ void parseinput(const string &inputname, const string &outputname) {
          if (arg[0] == "pop") {
              arg[2] = "";
          }
-//the data type of each stack or queue is stored
+//the data type of each Stack or Queue is stored
             dtype = arg[1].at(0);
 //creates a new Stack or Queue only if it does not exist and based off its data type
 //the name of each Stack or Queue (including its data type) is stored as string value of the map
@@ -212,8 +213,9 @@ void parseinput(const string &inputname, const string &outputname) {
                 }
                         
               }
-                  }
-//pop will only occur if the list exists, and is not empty
+         }
+//if the commands calls for a pop for a certain list a check is done to make sure the list is not empty and exists and if so a resulting error message will be sent
+//otherwise, the value is popped to the correct Stack or Queue name from searching the map of its respective data type
         if(arg[0] == "pop") {
         if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
             outputfile << "ERROR: This name does not exist!" << "\n";
@@ -246,9 +248,9 @@ void parseinput(const string &inputname, const string &outputname) {
 
         }
             
-        }
-//push will only occur if the data type exists 
-//each element being pushed must be converted to its proper data type, based off of the first letter of the list
+    }
+//push will only occur if the Stack or Queue exists which is found using the check_exists function
+//each element that is pushed must be converted to its proper data type, based off of the first letter of the second argument
           if(arg[0] == "push") {
                 if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
                     outputfile << "ERROR: This name does not exist!" << "\n";
@@ -259,20 +261,16 @@ void parseinput(const string &inputname, const string &outputname) {
                     if (dtype == 'd') 
                     mapsLd[arg[1]]-> push(stod(arg[2]));
                     if (dtype == 's') 
-                    mapsLs[arg[1]]-> push(arg[2]);
-
-
-                    
+                    mapsLs[arg[1]]-> push(arg[2]);      
                 }
-           
-
             }        
-            
      }
+
      inputfile.close();
  }
  outputfile.close();
- //to prevent memory leaks all pointers created with new are deleted from all the maps
+ 
+ //to prevent memory leaks all object pointers created with new are deleted from all the maps
  for (auto i : mapsLi) {
      delete (i.second);
  }
