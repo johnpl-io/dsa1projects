@@ -32,38 +32,97 @@ public:
 inline int getlength() {
       return theSize;
     }
-//SimpleList destructor
+
+//virtual SimpleList destructor as it used to delete a derived stack and queues using a pointer of SimpleList
+//destructor allows for freeing of all nodes once a SimpleList pointer is deleted
  virtual ~SimpleList() {
-    Node* current = head;
+    Node* curr = head;
     Node* next;
-    while(current != nullptr) {
-        next = current->next;
-        delete current;
-        current = next;
+    while(curr != nullptr) {
+        next = curr->next;
+        delete curr;
+        curr = next;
     }
 }
-//
+//pure virtual function that are used in derive classes of Stack and Queue
 virtual T pop() = 0;
 virtual void push(T value) = 0;
+//private member variables
 private:
     int theSize;
     Node *head;
     Node *tail;
 };
+//function decleration for insert an element at the end of a list
+template <typename T>
+void SimpleList<T>::insertatEnd(T value) {
+//if the list has a length 0 the head and tail become the new node that is inserted
+    if(getlength() == 0) {
+        Node* newNode = new Node(value);
+        theSize++;
+        head = tail = newNode;
+//otherwise the element is inserted next to the tail, becoming the new tail
+   } else {
+        Node* newNode = new Node(value);
+        tail->next = newNode;
+        tail = newNode;
+              theSize++;
+        }
+    }
+//function declaration for inserting elements at the start of the list
+template <typename T>
+   void SimpleList<T>::insertatStart(T value) {
+    //same procedure as insert at end of the list has a size 0
+        if(getlength() == 0) {
+            Node* newNode = new Node(value);
+            theSize++;
+            head = tail = newNode;
+        }
+    //otherwise insert the node at the front of the list and make it the new head
+        else {
+            Node* newNode = new Node(value);
+            newNode->next = head;
+               theSize++;
+            head = newNode;
+        }
+    }
+//function declaration for removing an element from start of list
+template <typename T>
+  T SimpleList<T>::removefromStart() {
+//if the length of the list is zero 0 is returned as this condition should not be possible
+        if(getlength() == 0) {
+            return 0;
+        }
+//a temp variable is used to store the data of the head so it can be returned after the temp pointer storing its contents are deleted
+//the value next to the head becomes the new head
+        else {
+       Node *temp = head;
+       T tempval = head->data;
+       head = head->next;
+       delete (temp);
+       theSize--;
+       return tempval;
+        }
+       
+    } 
 
+//Derived class stack 
 template <typename T>
 class Stack : public SimpleList<T> {
     public:
+//This allows for SimpleList constructors to be inherited
     using SimpleList<T>::SimpleList;
+//function declaration push allowing for insertatstart to be defined as push only for stacks
     void push(T value) { 
         this->insertatStart(value);
     }
+//function delcaration pop allowing for pop to remove from start
     T pop() {
         return this->removefromStart();
     }
 
 };
-
+//class definition for derived class Queue
 template <typename T>
 class Queue : public SimpleList<T> {
     public: 
@@ -77,57 +136,12 @@ class Queue : public SimpleList<T> {
 };
 
 
-template <typename T>
-void SimpleList<T>::insertatEnd(T value) {
-    if(getlength() == 0) {
-        Node* newNode = new Node(value);
-        theSize++;
-        head = tail = newNode;
 
-   } else {
-        Node* newNode = new Node(value);
-        tail->next = newNode;
-        tail = newNode;
-              theSize++;
-        }
-
-
-    }
-
-template <typename T>
-   void SimpleList<T>::insertatStart(T value) {
-        if(getlength() == 0) {
-            Node* newNode = new Node(value);
-            theSize++;
-            head = tail = newNode;
-        }
-        else {
-            Node* newNode = new Node(value);
-            newNode->next = head;
-               theSize++;
-            head = newNode;
-        }
-    }
-template <typename T>
-  T SimpleList<T>::removefromStart() {
-        if(getlength() == 0) {
-            return 0;
-        }
-        else {
-       Node *temp = head;
-       T tempval = head->data;
-       head = head->next;
-       delete (temp);
-       theSize--;
-       return tempval;
-        }
-       
-    } 
 bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<string, SimpleList<double> *> mapsSLd, map<string, SimpleList<string> *> mapsSLs) {
     return (mapsSLi.find(name)!=mapsSLi.end() || mapsSLd.find(name)!=mapsSLd.end() || mapsSLs.find(name)!=mapsSLs.end());
 }
  
-void parseinput(string inputname, string outputname) {
+void parseinput(const string &inputname, const string &outputname) {
     auto start = chrono::high_resolution_clock::now();
     ifstream inputfile (inputname);
     ofstream outputfile;
