@@ -112,7 +112,7 @@ class Stack : public SimpleList<T> {
     public:
 //This allows for SimpleList constructors to be inherited
     using SimpleList<T>::SimpleList;
-//function declaration push allowing for insertatstart to be defined as push only for stacks
+//function declaration push allowing for insertatStart to be defined as push only for Stacks
     void push(T value) { 
         this->insertatStart(value);
     }
@@ -127,6 +127,7 @@ template <typename T>
 class Queue : public SimpleList<T> {
     public: 
     using SimpleList<T>::SimpleList;
+//function declaration for push that is insertatEnd for Queue
     void push(T value) { 
         this->insertatEnd(value);
     }
