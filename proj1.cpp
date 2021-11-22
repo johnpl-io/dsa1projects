@@ -1,5 +1,3 @@
-// CPP program to find infix for
-// a given postfix.
 #include <iostream>
 #include <sstream> 
 #include <fstream>
@@ -131,26 +129,31 @@ class Queue : public SimpleList<T> {
     void push(T value) { 
         this->insertatEnd(value);
     }
+//function decleration for pop for Queue which calls removefromStart
     T pop() {
         return this->removefromStart();
     }
 };
 
 
-
-bool check_exists(string name, map<string, SimpleList<int> *> mapsSLi,  map<string, SimpleList<double> *> mapsSLd, map<string, SimpleList<string> *> mapsSLs) {
-    return (mapsSLi.find(name)!=mapsSLi.end() || mapsSLd.find(name)!=mapsSLd.end() || mapsSLs.find(name)!=mapsSLs.end());
+//this function checks if a map exists by using the member function find for each map true is returned if a stack or queue name 
+//exists inside of the map
+bool check_exists(const string &name, map<string, SimpleList<int> *> mapsLi,  map<string, SimpleList<double> *> mapsLd, map<string, SimpleList<string> *> mapsLs) {
+    return (mapsLi.find(name)!=mapsLi.end() || mapsLd.find(name)!=mapsLd.end() || mapsLs.find(name)!=mapsLs.end());
 }
- 
+//function that handles parsing the inputfile and creating the outputfile
 void parseinput(const string &inputname, const string &outputname) {
-    auto start = chrono::high_resolution_clock::now();
+//streams are used to handle parsing of the inputfile and write to the output file
     ifstream inputfile (inputname);
     ofstream outputfile;
     string line;
-    map<string, SimpleList<int> *> mapsSLi;
-    map<string, SimpleList<double> *> mapsSLd;
-    map<string, SimpleList<string> *> mapsSLs;
+//maps that are used to store abstract SimpleList pointers for each data type
+    map<string, SimpleList<int> *> mapsLi;
+    map<string, SimpleList<double> *> mapsLd;
+    map<string, SimpleList<string> *> mapsLs;
+//each element of the arg array is an argument from a single line
     string arg[3];
+//this char stores the data type of the Stack or Queue that is being manipulated from the input file
     char dtype;
     int count; 
 
@@ -170,62 +173,62 @@ void parseinput(const string &inputname, const string &outputname) {
          }
             dtype = arg[1].at(0);
             if(arg[0] == "create") {
-                if( check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs) ) {
+                if( check_exists(arg[1],mapsLi,mapsLd,mapsLs) ) {
                   outputfile << "ERROR: This name already exists!" << "\n";
               }
               else {
                 if(arg[2] == "stack") {
                    if(dtype == 'i') 
-                         mapsSLi.insert(pair<string, SimpleList<int> *>(arg[1], new Stack<int>()));
+                         mapsLi.insert(pair<string, SimpleList<int> *>(arg[1], new Stack<int>()));
                    
                    if(dtype == 'd') 
-                      mapsSLd.insert(pair<string, SimpleList<double> *>(arg[1], new Stack<double>())); 
+                      mapsLd.insert(pair<string, SimpleList<double> *>(arg[1], new Stack<double>())); 
                     
                     if (dtype == 's')
-                     mapsSLs.insert(pair<string, SimpleList<string> *>(arg[1], new Stack<string>()));
+                     mapsLs.insert(pair<string, SimpleList<string> *>(arg[1], new Stack<string>()));
                 }
 
                  if(arg[2] == "queue") {
                    if(dtype == 'i') 
-                         mapsSLi.insert(pair<string, SimpleList<int> *>(arg[1], new Queue<int>()));
+                         mapsLi.insert(pair<string, SimpleList<int> *>(arg[1], new Queue<int>()));
                    
                    if(dtype == 'd') 
-                      mapsSLd.insert(pair<string, SimpleList<double> *>(arg[1], new Queue<double>())); 
+                      mapsLd.insert(pair<string, SimpleList<double> *>(arg[1], new Queue<double>())); 
                     
                     if (dtype == 's')
-                     mapsSLs.insert(pair<string, SimpleList<string> *>(arg[1], new Queue<string>()));
+                     mapsLs.insert(pair<string, SimpleList<string> *>(arg[1], new Queue<string>()));
                 }
                         
               }
                   }
   
         if(arg[0] == "pop") {
-        if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
+        if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
             outputfile << "ERROR: This name does not exist!" << "\n";
                 }
         else {
             if(dtype == 'i') {
-                if(mapsSLi[arg[1]]->getlength() == 0) {
+                if(mapsLi[arg[1]]->getlength() == 0) {
                 outputfile << "ERROR: This list is empty!" << "\n";
                 }
                 else {
-                 outputfile << "Value popped: " << mapsSLi[arg[1]]->pop() << "\n";
+                 outputfile << "Value popped: " << mapsLi[arg[1]]->pop() << "\n";
                 }
             }
               if(dtype == 'd') {
-                if(mapsSLd[arg[1]]->getlength() == 0) {
+                if(mapsLd[arg[1]]->getlength() == 0) {
                 outputfile << "ERROR: This list is empty!" << "\n";
                 }
                 else {
-                 outputfile << "Value popped: " << mapsSLd[arg[1]]->pop() << "\n";
+                 outputfile << "Value popped: " << mapsLd[arg[1]]->pop() << "\n";
                 }
             }
                  if(dtype == 's') {
-                if(mapsSLs[arg[1]]->getlength() == 0) {
+                if(mapsLs[arg[1]]->getlength() == 0) {
                 outputfile << "ERROR: This list is empty!" << "\n";
                 }
                 else {
-                 outputfile << "Value popped: " << mapsSLs[arg[1]]->pop() << "\n";
+                 outputfile << "Value popped: " << mapsLs[arg[1]]->pop() << "\n";
                 }
             }
 
@@ -233,16 +236,16 @@ void parseinput(const string &inputname, const string &outputname) {
             
         }
           if(arg[0] == "push") {
-                if(!check_exists(arg[1],mapsSLi,mapsSLd,mapsSLs)) {
+                if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
                     outputfile << "ERROR: This name does not exist!" << "\n";
                 }
                 else {
                     if (dtype == 'i') 
-                    mapsSLi[arg[1]]-> push(stoi(arg[2]));
+                    mapsLi[arg[1]]-> push(stoi(arg[2]));
                     if (dtype == 'd') 
-                    mapsSLd[arg[1]]-> push(stod(arg[2]));
+                    mapsLd[arg[1]]-> push(stod(arg[2]));
                     if (dtype == 's') 
-                    mapsSLs[arg[1]]-> push(arg[2]);
+                    mapsLs[arg[1]]-> push(arg[2]);
 
 
                     
@@ -255,18 +258,15 @@ void parseinput(const string &inputname, const string &outputname) {
      inputfile.close();
  }
  outputfile.close();
- for (auto i : mapsSLi) {
+ for (auto i : mapsLi) {
      delete i.second;
  }
-  for (auto i : mapsSLd) {
+  for (auto i : mapsLd) {
      delete i.second;
  }
-   for (auto i : mapsSLs) {
+   for (auto i : mapsLs) {
      delete i.second;
  }
- auto stop = chrono::high_resolution_clock::now();
- auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-cout << duration.count() << endl;
 }
 
 
@@ -275,9 +275,9 @@ int main()
 {
 string inputname;
 string outputname;
-cout << "input" << "\n";
+cout << "input file: ";
 cin >> inputname;
-cout << "output" << "\n";
+cout << "output file: ";
 cin >> outputname;
 parseinput(inputname, outputname);
 
