@@ -138,8 +138,16 @@ class Queue : public SimpleList<T> {
 
 //this function checks if a map exists by using the member function find for each map true is returned if a stack or queue name 
 //exists inside of the map
-bool check_exists(const string &name, map<string, SimpleList<int> *> mapsLi,  map<string, SimpleList<double> *> mapsLd, map<string, SimpleList<string> *> mapsLs) {
-    return (mapsLi.find(name)!=mapsLi.end() || mapsLd.find(name)!=mapsLd.end() || mapsLs.find(name)!=mapsLs.end());
+bool check_exists(const string &name, map<string, SimpleList<int> *> &mapsLi,  map<string, SimpleList<double> *> &mapsLd, map<string, SimpleList<string> *> &mapsLs) {
+//each map is only searched if it is in question based off of the data type
+    if (name.at(0) == 'i')
+     return (mapsLi.find(name)!=mapsLi.end());
+      if (name.at(0) == 'd')
+     return (mapsLd.find(name)!=mapsLd.end());
+        if (name.at(0) == 's')
+     return (mapsLs.find(name)!=mapsLs.end());
+     //impossible condition so if reached error return of -1
+    return -1;
 }
 //function that handles parsing the inputfile and creating the outputfile
 void parseinput(const string &inputname, const string &outputname) {
@@ -156,22 +164,26 @@ void parseinput(const string &inputname, const string &outputname) {
 //this char stores the data type of the Stack or Queue that is being manipulated from the input file
     char dtype;
     int count; 
-
     outputfile.open(outputname);
  if (inputfile.is_open()) {
-    
+  //while loop goes through each line of the file  
      while ( getline (inputfile, line)) {
          outputfile << "PROCESSING COMMAND: " << line << "\n";
          stringstream s(line);
          count = 0;
+//string stream is used to break up each line into its arguments and place into the arg string array 
          while (s >> line) {
              arg[count] = line;
              count++;
          }
+//since pop is only followed by the name arg[2] is cleared from the previous line
          if (arg[0] == "pop") {
              arg[2] = "";
          }
+//the data type of each stack or queue is stored
             dtype = arg[1].at(0);
+//creates a new Stack or Queue only if it does not exist and based off its data type
+//the name of each Stack or Queue (including its data type) is stored as string value of the map
             if(arg[0] == "create") {
                 if( check_exists(arg[1],mapsLi,mapsLd,mapsLs) ) {
                   outputfile << "ERROR: This name already exists!" << "\n";
@@ -201,7 +213,7 @@ void parseinput(const string &inputname, const string &outputname) {
                         
               }
                   }
-  
+//pop will only occur if the list exists, and is not empty
         if(arg[0] == "pop") {
         if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
             outputfile << "ERROR: This name does not exist!" << "\n";
@@ -235,6 +247,8 @@ void parseinput(const string &inputname, const string &outputname) {
         }
             
         }
+//push will only occur if the data type exists 
+//each element being pushed must be converted to its proper data type, based off of the first letter of the list
           if(arg[0] == "push") {
                 if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
                     outputfile << "ERROR: This name does not exist!" << "\n";
@@ -258,21 +272,20 @@ void parseinput(const string &inputname, const string &outputname) {
      inputfile.close();
  }
  outputfile.close();
+ //to prevent memory leaks all pointers created with new are deleted from all the maps
  for (auto i : mapsLi) {
-     delete i.second;
+     delete (i.second);
  }
   for (auto i : mapsLd) {
-     delete i.second;
+     delete (i.second);
  }
    for (auto i : mapsLs) {
-     delete i.second;
+     delete (i.second);
  }
 }
-
-
-// Driver code
 int main()
 {
+//the input file and output file are collected as string and passed to parseinput 
 string inputname;
 string outputname;
 cout << "input file: ";
@@ -280,6 +293,4 @@ cin >> inputname;
 cout << "output file: ";
 cin >> outputname;
 parseinput(inputname, outputname);
-
-
 }
