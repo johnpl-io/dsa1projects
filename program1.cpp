@@ -1,33 +1,31 @@
 //John Pluchino DSA 1 Program 1 
 //Cooper Union
+//This program creates Stacks and Queues using an Abstract class with a simple singly linked list functionality
 #include <iostream>
 #include <sstream> 
 #include <fstream>
-#include <unordered_map>
 #include <map>
-#include <chrono>
 using namespace std;
 //Abstract base class SimpleList
 template <typename T> 
 class SimpleList {
 private:
-//private member class Node 
 class Node {
-//public member variables are used in Node constructor
+//public member variables that are used in Node constructor
     public:
     T data;
     Node *next;
 
-//member Inititlization List for Default constructor of Node
+//Member initializer list for Default constructor of Node
     Node(T data): data{data}, next{nullptr} { }
 };
-//initilization of protected member functions to only be used in derived classes of Stack and Queue
+// of protected member functions to only be used in derived classes of Stack and Queue
 protected:
     void insertatEnd(T value);
     void insertatStart(T value);
     T removefromStart();
 public:
-//Member Initilization list for Default constructor of Simple List
+//member initializer list for Default constructor of Simple List
     SimpleList() : theSize{0}, head{nullptr}, tail{nullptr} { }
 inline int getlength() {
       return theSize;
@@ -47,13 +45,12 @@ inline int getlength() {
 //pure virtual function that are used in derive classes of Stack and Queue
 virtual T pop() = 0;
 virtual void push(T value) = 0;
-//private member variables
 private:
     int theSize;
     Node *head;
     Node *tail;
 };
-//function decleration for insert a Node at the end of a list
+//function declaration for insert a Node at the end of a list
 template <typename T>
 void SimpleList<T>::insertatEnd(T value) {
 //if the list has a length 0 the head and tail become the new node that is inserted
@@ -61,7 +58,7 @@ void SimpleList<T>::insertatEnd(T value) {
         Node* newNode = new Node(value);
         theSize++;
         head = tail = newNode;
-//otherwise the Node is inserted next to the tail, becoming the new tail
+//otherwise the Node is inserted next to the tail, and becomes the new tail
    } else {
         Node* newNode = new Node(value);
         tail->next = newNode;
@@ -72,7 +69,7 @@ void SimpleList<T>::insertatEnd(T value) {
 //function declaration for inserting Nodes at the start of the list
 template <typename T>
    void SimpleList<T>::insertatStart(T value) {
-    //same procedure as insert at end of the list has a size 0
+    //same procedure as insert at end of the list has when the list has a size 0
         if(getlength() == 0) {
             Node* newNode = new Node(value);
             theSize++;
@@ -152,7 +149,7 @@ bool check_exists(const string &name, const map<string, SimpleList<int> *> &maps
 }
 //function that handles parsing the inputfile and creating the outputfile
 void parseinput(const string &inputname, const string &outputname) {
-//streams are used to handle parsing of the inputfile and write to the output file
+//streams are used to handle parsing of the input file and writing to the output file
     ifstream inputfile (inputname);
     ofstream outputfile;
     string line;
@@ -172,19 +169,19 @@ void parseinput(const string &inputname, const string &outputname) {
          outputfile << "PROCESSING COMMAND: " << line << "\n";
          stringstream s(line);
          count = 0;
-//string stream is used to break up each line into its arguments and place into the arg string array 
+//string stream is used to break up each line into its arguments and place them into the arg string array 
          while (s >> line) {
              arg[count] = line;
              count++;
          }
-//since pop is only followed by the name arg[2] is cleared from the previous line
+//since pop is only followed by the name of list, (there would be no arg[2]) arg[2] is cleared as it would be saved from previous line
          if (arg[0] == "pop") {
              arg[2] = "";
          }
 //the data type of each Stack or Queue is stored
             dtype = arg[1].at(0);
 //creates a new Stack or Queue only if it does not exist and based off its data type
-//the name of each Stack or Queue (including its data type) is stored as string value of the map
+//the name of each Stack or Queue (including its data type) is stored as string value in the map
             if(arg[0] == "create") {
                 if( check_exists(arg[1],mapsLi,mapsLd,mapsLs) ) {
                   outputfile << "ERROR: This name already exists!" << "\n";
@@ -214,7 +211,8 @@ void parseinput(const string &inputname, const string &outputname) {
                         
               }
          }
-//if the commands calls for a pop for a certain list a check is done to make sure the list is not empty and exists and if so a resulting error message will be sent
+//if a line in the input file calls for a pop for a certain list, a check is done to make sure the list is not empty and if it does not exist
+//if so a resulting error message will be appened to the output file sent that corresponds to the respective error
 //otherwise, the value is popped to the correct Stack or Queue name from searching the map of its respective data type
         if(arg[0] == "pop") {
         if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
@@ -250,7 +248,7 @@ void parseinput(const string &inputname, const string &outputname) {
             
     }
 //push will only occur if the Stack or Queue exists which is found using the check_exists function
-//each element that is pushed must be converted to its proper data type, based off of the first letter of the second argument
+//each element that is pushed must be converted from string to its proper data type, based off of the first letter of the second argument
           if(arg[0] == "push") {
                 if(!check_exists(arg[1],mapsLi,mapsLd,mapsLs)) {
                     outputfile << "ERROR: This name does not exist!" << "\n";
@@ -283,7 +281,7 @@ void parseinput(const string &inputname, const string &outputname) {
 }
 int main()
 {
-//the input file and output file are collected as string and passed to parseinput 
+//the input file and output file are collected as strings and passed to parseinput function
 string inputname;
 string outputname;
 cout << "input file: ";
