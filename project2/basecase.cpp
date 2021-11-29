@@ -110,17 +110,49 @@ int main() {
 
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
- bool comparedata(const Data* a, const Data* b) {
+inline bool comparedata(const Data* a, const Data* b) {
   if(a->lastName != b->lastName) 
     return a->lastName < b->lastName;
-  if(a->lastName == b->lastName && a->firstName != b->firstName) {
+  if(a -> firstName != b->firstName) {
     return a->firstName < b->firstName;
   }
   return a->ssn < b->ssn;
 
   }
 
+inline bool comparesus(const Data* a, const Data* b) {
+  if (a->lastName < b->lastName) 
+  return true;
+  if (a->lastName == b->lastName) {
+  if (a->firstName < b->firstName)
+  return true;
+  if(a->firstName == b->firstName && a->ssn < b->ssn)
+  return true;
+  }
+ return false;
+}
+ 
+inline bool comparedata1(const Data* a, const Data* b) {
+    if (a->lastName > b->lastName)
+        return false;
+    if (a->lastName < b->lastName)
+        return true;
+    if (a->firstName > b->firstName)
+        return false;
+    if (a->firstName < b->firstName)
+        return true;
+  return a->ssn < b->ssn;
+
+  }
+inline bool comparedata2(const Data* a, const Data* b) {
+ if (a->lastName > b-> lastName || a->firstName > b->firstName)
+ return false;
+  if (a->lastName < b-> lastName || a->firstName < b->firstName)
+ return true;
+ return a->ssn < b->ssn;
+
+  }
 void sortDataList(list<Data *> &l) {
-  l.sort(comparedata);
+  l.sort(comparedata2);
 
 }
