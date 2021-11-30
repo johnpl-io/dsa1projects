@@ -204,6 +204,11 @@ void sortDataList(list<Data *> &l) {
         result.push_back(c->ssn);
     }
 countingRadixSort(result, 11);
+int i = 0;
+for (auto &c : l) {
+  c->ssn = result[i];
+  i++;
+}
 
 
 
