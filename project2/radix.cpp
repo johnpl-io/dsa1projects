@@ -103,13 +103,14 @@ int main() {
 
   return 0;
 }
-Data * result[1'001'000];
+
 // -------------------------------------------------
 // YOU MAY NOT CHANGE OR ADD ANY CODE ABOVE HERE !!!
 // -------------------------------------------------
 
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
+string arr[1'001'000];
 inline bool comparedata(const Data* a, const Data* b) {
   if(a->lastName != b->lastName) 
     return a->lastName < b->lastName;
@@ -132,7 +133,7 @@ inline bool comparesus(const Data* a, const Data* b) {
  return false;
 }
  
-inline bool comparedata3(const Data* a, const Data* b) {
+inline bool comparedata1(const Data* a, const Data* b) {
     if (a->lastName > b->lastName)
         return false;
     if (a->lastName < b->lastName)
@@ -144,10 +145,6 @@ inline bool comparedata3(const Data* a, const Data* b) {
   return a->ssn < b->ssn;
 
   }
-  inline bool comparedata4(const Data* a, const Data* b) {
-  return a->ssn < b->ssn;
-
-  }
 inline bool comparedata2(const Data* a, const Data* b) {
  if (a->lastName > b-> lastName || a->firstName > b->firstName)
  return false;
@@ -156,6 +153,58 @@ inline bool comparedata2(const Data* a, const Data* b) {
  return a->ssn < b->ssn;
 
   }
+  void radixSortA( vector<string> & arr, int stringLen )
+{
+const int BUCKETS = 256;
+vector<vector<string>> buckets( BUCKETS );
+for( int pos = stringLen - 1; pos >= 0; --pos )
+{
+for( string & s : arr )
+buckets[ s[ pos ] ].push_back( std::move( s ) );
+int idx = 0;
+for( auto & thisBucket : buckets )
+{
+for( string & s : thisBucket )
+arr[ idx++ ] = std::move( s );
+
+thisBucket.clear( );
+}
+}
+}
+void countingRadixSort( vector<string> & arr, int stringLen )
+{
+const int BUCKETS = 256;
+int N = arr.size( );
+vector<string> buffer( N );
+vector<string> *in = &arr;
+vector<string> *out = &buffer;
+for( int pos = stringLen - 1; pos >= 0; --pos )
+{
+vector<int> count( BUCKETS + 1 );
+for( int i = 0; i < N; ++i )
+++count[ (*in)[ i ] [ pos ] + 1 ];
+for( int b = 1; b <= BUCKETS; ++b )
+count[ b ] += count[ b - 1 ];
+for( int i = 0; i < N; ++i )
+(*out)[ count[ (*in)[ i ] [ pos ] ]++ ] = std::move( (*in)[ i ] );
+
+// swap in and out roles
+std::swap( in, out );
+}
+// if odd number of passes, in is buffer, out is arr; so move back
+if( stringLen % 2 == 1 )
+for( int i = 0; i < arr.size( ); ++i )
+(*out)[ i ] = std::move( (*in)[ i ] );
+}
+  
 void sortDataList(list<Data *> &l) {
-l.sort(comparedata4);
+  int k = 0;
+  vector<string> result;
+  for (Data * const &c: l) {
+        result.push_back(c->ssn);
+    }
+countingRadixSort(result, 11);
+
+
+
 }
