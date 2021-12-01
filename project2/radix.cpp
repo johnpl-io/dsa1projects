@@ -171,7 +171,7 @@ thisBucket.clear( );
 }
 }
 }
-void countingRadixSort( vector<string> & arr, int stringLen )
+inline void countingRadixSort( vector<string> & arr, int stringLen )
 {
 const int BUCKETS = 256;
 int N = arr.size( );
@@ -208,6 +208,7 @@ int i = 0;
 for (auto &c : l) {
   c->ssn = result[i];
   i++;
+ 
 }
 
 

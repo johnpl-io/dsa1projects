@@ -157,5 +157,5 @@ inline bool comparedata2(const Data* a, const Data* b) {
 
   }
 void sortDataList(list<Data *> &l) {
-l.sort(comparedata4);
+l.sort(comparedata);
 }
