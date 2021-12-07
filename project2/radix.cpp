@@ -196,10 +196,10 @@ if( stringLen % 2 == 1 )
 for( int i = 0; i < arr.size( ); ++i )
 (*out)[ i ] = std::move( (*in)[ i ] );
 }
-  
+   vector<string> result;
 void sortDataList(list<Data *> &l) {
   int k = 0;
-  vector<string> result;
+ 
 
   for (Data * const &c: l) {
         result.push_back(c->ssn);

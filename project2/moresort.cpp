@@ -165,13 +165,31 @@ for (auto const &c : l) {
    k++;
 }
 
-sort(result, result + l.size(), comparedata3);
+sort(result, result + l.size(), comparedata4);
 k =0;
 for (auto &c : l) {
-   c = result[k];
+  c = result[k];
    k++;
 }
-  
-  
+/*int i = 0;
+int j = 0;
+int z = 0;
+Data* tmp [100];
+string keylast = "";
+string keyfirst = "";
+while(i < l.size()) {
+  keylast = result[i]->lastName;
+   keyfirst = result[i]->firstName;
+   j = i;
+   while(result[j]->firstName==keyfirst && result[j]->lastName==keylast ) {
+     z = 0;
+      tmp[z] = result[j];
+      j++;
+      z++;
+   }
+   cout << tmp[0]->lastName + " " + tmp[0]->firstName << endl;
+i++;
+}
+  */
 
 }
