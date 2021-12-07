@@ -103,13 +103,14 @@ int main() {
 
   return 0;
 }
-Data * result[1'001'000];
+
 // -------------------------------------------------
 // YOU MAY NOT CHANGE OR ADD ANY CODE ABOVE HERE !!!
 // -------------------------------------------------
 
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
+Data * result[1'001'000];
 inline bool comparedata(const Data* a, const Data* b) {
   if(a->lastName != b->lastName) 
     return a->lastName < b->lastName;
@@ -158,6 +159,7 @@ inline bool comparedata2(const Data* a, const Data* b) {
   }
 void sortDataList(list<Data *> &l) {
   int k = 0;
+ 
 for (auto const &c : l) {
    result[k] = c;
    k++;
@@ -169,4 +171,7 @@ for (auto &c : l) {
    c = result[k];
    k++;
 }
+  
+  
+
 }

@@ -200,6 +200,7 @@ for( int i = 0; i < arr.size( ); ++i )
 void sortDataList(list<Data *> &l) {
   int k = 0;
   vector<string> result;
+
   for (Data * const &c: l) {
         result.push_back(c->ssn);
     }
