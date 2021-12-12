@@ -165,7 +165,7 @@ for (auto const &c : l) {
    k++;
 }
 
-sort(result, result + l.size(), comparedata4);
+sort(result, result + l.size(), comparedata3);
 k =0;
 for (auto &c : l) {
   c = result[k];

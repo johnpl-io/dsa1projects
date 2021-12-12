@@ -110,41 +110,8 @@ int main() {
 
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
-Data * result[1'001'000];
-inline bool comparedata(const Data* a, const Data* b) {
-  if(a->lastName != b->lastName) 
-    return a->lastName < b->lastName;
-  if(a -> firstName != b->firstName) {
-    return a->firstName < b->firstName;
-  }
-  return a->ssn < b->ssn;
+Data * resarr[1'010'000];
 
-  }
-
-inline bool comparesus(const Data* a, const Data* b) {
-  if (a->lastName < b->lastName) 
-  return true;
-  if (a->lastName == b->lastName) {
-  if (a->firstName < b->firstName)
-  return true;
-  if(a->firstName == b->firstName && a->ssn < b->ssn)
-  return true;
-  }
- return false;
-}
- 
-inline bool comparedata3(const Data* a, const Data* b) {
-    if (a->lastName > b->lastName)
-        return false;
-    if (a->lastName < b->lastName)
-        return true;
-    if (a->firstName > b->firstName)
-        return false;
-    if (a->firstName < b->firstName)
-        return true;
-  return a->ssn < b->ssn;
-
-  }
   inline bool comparedata4(const Data* a, const Data* b) {
   return a->ssn < b->ssn;
 
@@ -161,27 +128,28 @@ void sortDataList(list<Data *> &l) {
   int k = 0;
  
 for (auto const &c : l) {
-   result[k] = c;
+   resarr[k] = c;
    k++;
 }
 int j = 0;
 int z = 0;
 int i = 0;
-while(i < l.size()) {
+int size = l.size();
+while(i < size) {
   z = j;
-  while(result[i]->lastName == result[j]->lastName && result[i]->firstName == result[j]->firstName) {
+  while(resarr[i]->firstName == resarr[j]->firstName) {
     j++;
-    if(j > l.size()-1) 
+    if(j > size-1) 
     break;
   }
  i = j;
- sort(result + z, result + j, comparedata4);
+ sort(resarr + z, resarr + j, comparedata4);
 }
 
 
 k =0;
 for (auto &c : l) {
-  c = result[k];
+  c = resarr[k];
    k++;
 }
 

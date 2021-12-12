@@ -199,9 +199,10 @@ for( int i = 0; i < arr.size( ); ++i )
    vector<string> result;
 void sortDataList(list<Data *> &l) {
   int k = 0;
- 
 
   for (Data * const &c: l) {
+    
+
         result.push_back(c->ssn);
     }
 countingRadixSort(result, 11);
@@ -209,7 +210,6 @@ int i = 0;
 for (auto &c : l) {
   c->ssn = result[i];
   i++;
- 
 }
 
 
